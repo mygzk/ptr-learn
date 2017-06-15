@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 
     private ListView lsHome;
     private HomeAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class MainActivity extends Activity {
         final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) findViewById(R.id.fragment_ptr_home_ptr_frame);
 
 
-       /* StoreHouseHeader header = new StoreHouseHeader(this);
+     /*   StoreHouseHeader header = new StoreHouseHeader(this);
         header.setPadding(0, LocalDisplay.dp2px(20), 0, LocalDisplay.dp2px(20));
         header.initWithString("Ultra PTR");*/
 
