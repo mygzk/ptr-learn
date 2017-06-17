@@ -8,14 +8,14 @@ import android.widget.ListView;
 
 import com.org.ptr.adapter.HomeAdapter;
 import com.org.ptr.bean.HomeBean;
-import com.org.ptr.widget.LoadMoreFooterView;
+import com.org.ptr.loadmore.LoadMoreContainer;
+import com.org.ptr.loadmore.LoadMoreFooterView;
+import com.org.ptr.loadmore.LoadMoreHandler;
+import com.org.ptr.loadmore.LoadMoreListViewContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import in.srain.cube.views.loadmore.LoadMoreContainer;
-import in.srain.cube.views.loadmore.LoadMoreHandler;
-import in.srain.cube.views.loadmore.LoadMoreListViewContainer;
 import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
