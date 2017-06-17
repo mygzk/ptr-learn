@@ -31,6 +31,21 @@ public class HomeAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    public void updateData(List<HomeBean> data) {
+        mData.clear();
+        if (mData != null) {
+            mData.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<HomeBean> data) {
+        if (mData != null) {
+            mData.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mData.size();

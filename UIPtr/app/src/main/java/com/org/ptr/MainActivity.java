@@ -8,21 +8,25 @@ import android.widget.ListView;
 
 import com.org.ptr.adapter.HomeAdapter;
 import com.org.ptr.bean.HomeBean;
-import com.org.ptr.util.LocalDisplay;
+import com.org.ptr.widget.LoadMoreFooterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.loadmore.LoadMoreContainer;
+import in.srain.cube.views.loadmore.LoadMoreHandler;
+import in.srain.cube.views.loadmore.LoadMoreListViewContainer;
 import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 
 public class MainActivity extends Activity {
 
     private ListView lsHome;
     private HomeAdapter adapter;
+    private LoadMoreListViewContainer mLoadMoreListViewContainer;
+    private List<HomeBean> datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,17 @@ public class MainActivity extends Activity {
 
     private void initView() {
         lsHome = (ListView) findViewById(R.id.pt_home_ls);
-        initdata();
+        datas = new ArrayList<>();
+        adapter = new HomeAdapter(this, datas);
+        lsHome.setAdapter(adapter);
+        initdata(true);
 
+        lsHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.toSkip(position);
+            }
+        });
         final PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) findViewById(R.id.fragment_ptr_home_ptr_frame);
 
 
@@ -58,29 +71,81 @@ public class MainActivity extends Activity {
                 ptrFrameLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        initdata(true);
                         ptrFrameLayout.refreshComplete();
                     }
                 }, 1500);
             }
         });
 
-    }
 
-    private void initdata() {
-        List<HomeBean> datas = new ArrayList<>();
-        datas.add(new HomeBean(GrideActivity.class, "grideView"));
-        datas.add(new HomeBean(GrideActivity.class, "grideView"));
-        datas.add(new HomeBean(GrideActivity.class, "grideView"));
-        datas.add(new HomeBean(GrideActivity.class, "grideView"));
-        datas.add(new HomeBean(GrideActivity.class, "grideView"));
-        adapter = new HomeAdapter(this, datas);
-        lsHome.setAdapter(adapter);
-
-        lsHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mLoadMoreListViewContainer = (LoadMoreListViewContainer) findViewById(R.id.load_more_list_view_container);
+        mLoadMoreListViewContainer.setAutoLoadMore(true);//设置是否自动加载更多
+        // mLoadMoreListViewContainer.useDefaultHeader();
+        LoadMoreFooterView loadMoreView = new LoadMoreFooterView(this);
+        mLoadMoreListViewContainer.setLoadMoreView(loadMoreView);
+        mLoadMoreListViewContainer.setLoadMoreUIHandler(loadMoreView);
+        //5.添加加载更多的事件监听
+        mLoadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.toSkip(position);
+            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
+                //模拟加载更多的业务处理
+                mLoadMoreListViewContainer.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                       /* start++;
+                        mockStrList.addAll(getMockData(start * 10, count));
+                        if (start * 10 > 30) {
+//                          mLoadMoreListViewContainer.loadMoreFinish(true, false);
+                            //以下是加载失败的情节
+                            int errorCode = 0;
+                            String errormessage = "加载失败，点击加载更多";
+                            mLoadMoreListViewContainer.loadMoreError(errorCode, errorMessage);
+                        } else {
+                            mLoadMoreListViewContainer.loadMoreFinish(false, true);
+                        }
+                        adapter.notifyDataSetChanged();*/
+                        initdata(false);
+                        mLoadMoreListViewContainer.loadMoreFinish(false, true);
+                    }
+                }, 3000);
             }
         });
+
+    }
+
+    private void initdata(boolean update) {
+        ArrayList datas = new ArrayList<>();
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        if (update) {
+            adapter.updateData(datas);
+        } else {
+            adapter.addData(datas);
+        }
+       /* datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));
+        datas.add(new HomeBean(GrideActivity.class, "grideView"));*/
+
     }
 }
